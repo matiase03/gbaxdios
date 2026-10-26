@@ -1,0 +1,41 @@
+name: Build GBA ROM & ArkOS R36S Port
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ARM Toolchain and Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev build-essential gcc-aarch64-linux-gnu
+
+      - name: Build GBA ROM
+        run: |
+          make -j$(nproc)
+
+      - name: Prepare ArkOS Port Package
+        run: |
+          cp pokeemerald.gba "ports/pokeemerald-arg/pokeemerald-argentina.gba"
+          cd ports && zip -r ../Pokemon_Argentina_R36S.zip .
+
+      - name: Upload GBA ROM
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pokemon_Argentina_GBA
+          path: pokeemerald.gba
+
+      - name: Upload R36S ArkOS Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pokemon_Argentina_R36S_Ports
+          path: Pokemon_Argentina_R36S.zip

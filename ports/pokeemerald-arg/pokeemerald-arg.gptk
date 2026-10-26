@@ -1,0 +1,32 @@
+# ==============================================================================
+# gptokeyb Gamepad Profile for R36S (RK3326) - Pokemon Emerald Argentina
+# Maps physical R36S buttons to GBA controls
+# ==============================================================================
+
+back = esc
+start = enter
+
+a = x
+b = z
+x = s
+y = a
+
+l1 = a
+l2 = q
+r1 = s
+r2 = w
+
+up = up
+down = down
+left = left
+right = right
+
+left_analog_up = up
+left_analog_down = down
+left_analog_left = left
+left_analog_right = right
+
+deadzone_mode = axial
+deadzone = 2000
+deadzone_scale = 8
+deadzone_delay = 16

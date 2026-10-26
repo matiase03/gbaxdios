@@ -1,0 +1,23 @@
+# ==============================================================================
+# Makefile para empaquetado y preparación de ArkOS / R36S
+# ==============================================================================
+
+PORT_DIR = ports
+OUTPUT_ZIP = Pokemon_Argentina_R36S.zip
+BUILD_ROM = pokeemerald.gba
+
+.PHONY: package-port clean-port
+
+package-port:
+	@echo "--- Empaquetando Puerto para ArkOS / R36S ---"
+	@if exist $(BUILD_ROM) ( \
+		copy $(BUILD_ROM) $(PORT_DIR)\pokeemerald-arg\pokeemerald-argentina.gba \
+	) else ( \
+		echo "Aviso: $(BUILD_ROM) no encontrado. Asegurate de compilarlo primero con make." \
+	)
+	@powershell -Command "Compress-Archive -Path '$(PORT_DIR)\*' -DestinationPath '$(OUTPUT_ZIP)' -Force"
+	@echo "Listo: $(OUTPUT_ZIP) generado para copiar a /roms/ports/ en tu R36S."
+
+clean-port:
+	@if exist $(OUTPUT_ZIP) del /f $(OUTPUT_ZIP)
+	@if exist $(PORT_DIR)\pokeemerald-arg\pokeemerald-argentina.gba del /f $(PORT_DIR)\pokeemerald-arg\pokeemerald-argentina.gba
