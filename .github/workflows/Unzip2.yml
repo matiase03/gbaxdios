@@ -1,0 +1,49 @@
+name: Descomprimir zip dividido
+
+on:
+  push:
+    paths:
+      - todo.zip
+      - todo.z01
+      - todo.z02
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verificar que estén todas las partes
+        id: check
+        run: |
+          if [ -f todo.zip ] && [ -f todo.z01 ] && [ -f todo.z02 ]; then
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+            echo "Faltan partes, no hago nada."
+          fi
+
+      - name: Unir las partes
+        if: steps.check.outputs.listo == 'true'
+        run: zip -s 0 todo.zip --out unido.zip
+
+      - name: Descomprimir en la raíz
+        if: steps.check.outputs.listo == 'true'
+        run: unzip -o unido.zip -d .
+
+      - name: Borrar zips
+        if: steps.check.outputs.listo == 'true'
+        run: rm -f unido.zip todo.zip todo.z[0-9][0-9]
+
+      - name: Commit de los archivos
+        if: steps.check.outputs.listo == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Descomprimir todo.zip dividido" || echo "Sin cambios"
+          git push
