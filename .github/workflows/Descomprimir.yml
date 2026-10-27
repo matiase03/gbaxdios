@@ -1,1 +1,3 @@
-
+cd tools
+          unzip -o falta.zip
+          ls -la
