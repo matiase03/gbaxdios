@@ -1,4 +1,4 @@
-name: Descomprimir falta.zip
+name: Descomprimir Falta.zip
 
 on:
   workflow_dispatch:
@@ -12,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-            - name: Descomprimir zip
+      - name: Descomprimir Falta.zip
         run: |
           cd tools
-          unzip -o "$(ls | grep -i '^falta\.zip$')"
-          rm -f "$(ls | grep -i '^falta\.zip$')"
+          unzip -o Falta.zip
+          rm Falta.zip
           ls -la
 
       - name: Commit del resultado
@@ -24,5 +24,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add -A
-          git commit -m "Descomprimir falta.zip" || echo "Nada para commitear"
-          git push 
+          git commit -m "Descomprimir Falta.zip" || echo "Nada para commitear"
+          git push
