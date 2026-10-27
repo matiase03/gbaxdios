@@ -17,7 +17,12 @@ jobs:
       - name: Install ARM Toolchain and Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev build-essential gcc-aarch64-linux-gnu
+          sudo apt-get install -y libpng-dev build-essential gcc-aarch64-linux-gnu
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+          sudo mkdir -p /opt/arm-toolchain
+          sudo tar -xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz -C /opt/arm-toolchain --strip-components=1
+          echo "/opt/arm-toolchain/bin" >> $GITHUB_PATH
+          arm-none-eabi-gcc --version || /opt/arm-toolchain/bin/arm-none-eabi-gcc --version
 
       - name: Build GBA ROM
         run: |
