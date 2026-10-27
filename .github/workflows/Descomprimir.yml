@@ -12,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Descomprimir falta.zip
+            - name: Descomprimir zip
         run: |
           cd tools
-          unzip -o falta.zip
-          rm falta.zip
+          unzip -o "$(ls | grep -i '^falta\.zip$')"
+          rm -f "$(ls | grep -i '^falta\.zip$')"
           ls -la
 
       - name: Commit del resultado
